@@ -10,7 +10,12 @@ public class Main {
         serviceList.addService("1");
         serviceList.addService("2");
         serviceList.addService("3");
+        serviceList.addService("4");
         serviceList.addSubService("22", "2");
+        serviceList.addSubService("23", "2");
+        serviceList.addSubService("24", "2");
+        serviceList.addSubService("31", "4");
+
         serviceList.printall();
     }
 }
