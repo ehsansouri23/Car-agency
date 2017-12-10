@@ -8,6 +8,10 @@ public class ServiceList {
         this.head = null;
     }
 
+    public Service getHead() {
+        return head;
+    }
+
     public void addService(String serviceName) {
         Service service = new Service(serviceName);
         if (head == null)
@@ -18,16 +22,6 @@ public class ServiceList {
             p.next = service;
         }
     }
-
-//    public void addService(Service root, Service service) {
-//        if (root == null)
-//            root = service;
-//        else {
-//            Service p = root;
-//            for (; p.next != null; p = p.next);
-//            p.next = service;
-//        }
-//    }
 
     public void addSubService(String subServiceName, String serviceName) {
         Service subService = new Service(subServiceName);
@@ -44,6 +38,26 @@ public class ServiceList {
                 }
             }
         }
+    }
+
+    public void deleteService(String serviceName) {
+        Service service = new Service(serviceName);
+        if (head.next == null && head.getName().equals(serviceName)) {
+            head = null;
+            return;
+        }
+        if (head.next != null && head.getName().equals(serviceName)) {
+            head = head.next;
+            return;
+        }
+        Service p = head;
+        Service q = head.next;
+        for (; q != null && !q.getName().equals(serviceName); q = q.next, p = p.next);
+        if (q.next == null) {
+            p.next = null;
+            return;
+        }
+        p.next = q.next;
     }
 
     public void printall() {
