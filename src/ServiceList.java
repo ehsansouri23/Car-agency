@@ -23,7 +23,7 @@ public class ServiceList {
         }
     }
 
-     public Service findService(Service head, String serviceName) {
+    public Service findService(Service head, String serviceName) {
         Service p = head;
         if (p == null)
             return null;
@@ -46,19 +46,17 @@ public class ServiceList {
 //        }
 
 
-
-         while (p != null) {
-             if (p.getName().equals(serviceName))
-                 return p;
-             if (p.getTag() == 1) {
-                 if (findService(p.innerList, serviceName) != null)
-                     return findService(p.innerList, serviceName);
-             }
-             p = p.next;
-         }
-         return null;
+        while (p != null) {
+            if (p.getName().equals(serviceName))
+                return p;
+            if (p.getTag() == 1) {
+                if (findService(p.innerList, serviceName) != null)
+                    return findService(p.innerList, serviceName);
+            }
+            p = p.next;
+        }
+        return null;
 //        }
-
 
 
 //         if(head.getName().equals(serviceName))
@@ -110,12 +108,11 @@ public class ServiceList {
     }
 
     public void printall() {
-        printall(head);
+        printall(head, 1);
     }
 
-    private void printall(Service head) {
+    private void printall(Service head, int n) {
         Service p = head;
-        System.out.print("<");
         for (; p != null; p = p.next)
             if (p.getTag() == 0) {
                 System.out.print(p.getName());
@@ -123,9 +120,13 @@ public class ServiceList {
                     System.out.print(",");
             } else {
                 System.out.print(p.getName() + ",");
-                printall(p.innerList);
+                System.out.println();
+                for (int i = 0; i < n; i++) {
+                    System.out.print("      ");
+                }
+                printall(p.innerList, n + 1);
             }
-        System.out.print(">");
+        System.out.println("    ");
     }
 
     public void testprint(Service head) {
