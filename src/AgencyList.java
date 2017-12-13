@@ -48,6 +48,10 @@ public class AgencyList {
         }
     }
 
+    public Agency findAgency(String agencyName) {
+        return findAgency(head, agencyName);
+    }
+
     public Agency findAgency(Agency head, String agencyName) {
         Agency p = head;
         while (p != null) {
@@ -56,6 +60,46 @@ public class AgencyList {
             p = p.next;
         }
         return null;
+    }
+
+    /**
+     * this function will check if a service is in list of services that an agency provides.
+     * @param serviceName
+     * @param agencyName
+     * @return
+     */
+    public boolean serviceIsInAgency(String serviceName, String agencyName) {
+        Agency agency = findAgency(agencyName);
+        System.out.println(agency.getName() + " found");
+        boolean found = false;
+        for (int i = 0; i < agency.providedServices.size(); i++) {
+            if (agency.providedServices.get(i).getName().equals(serviceName))
+                found = true;
+            else {
+                if (serviceList.findService(agency.providedServices.get(i).innerList, serviceName) != null)
+                    found = true;
+            }
+        }
+
+        return found;
+    }
+
+    public void order(String serviceName, String agencyName, int priority) {
+        Agency agency = findAgency(agencyName);
+        if (agency != null)
+            System.out.println(agency.getName() + " found");
+        for (int i = 0; i < agency.providedServices.size(); i++) {
+            if (agency.providedServices.get(i).getName().equals(serviceName)) {
+                System.out.println(serviceName + " ordered succesfully");
+//                System.out.println("Not such a service you want to order named " + serviceName);
+                return;
+            } else if (serviceList.findService(agency.providedServices.get(i).innerList, serviceName) == null) {
+                System.out.println("Not such a service you want to order named " + serviceName);
+                return;
+            } else System.out.println(serviceName + " ordered succesfully");
+
+        }
+//        System.out.println(serviceName + " ordered succesfully");
     }
 
     public void printAll() {
