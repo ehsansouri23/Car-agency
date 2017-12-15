@@ -12,6 +12,10 @@ public class ServiceList {
         return head;
     }
 
+    /**
+     * this function will add a main service to out service list.
+     * @param serviceName
+     */
     public void addService(String serviceName) {
         Service service = new Service(serviceName);
         if (head == null)
@@ -23,6 +27,17 @@ public class ServiceList {
         }
     }
 
+    public Service findService(String serviceName) {
+        return findService(head, serviceName);
+    }
+
+    /**
+     * this function will search for a service in service list and return it. if that does not exists, will return null.
+     * searched service can also be a subservice
+     * @param head
+     * @param serviceName
+     * @return
+     */
     public Service findService(Service head, String serviceName) {
         Service p = head;
         if (p == null)
@@ -67,6 +82,11 @@ public class ServiceList {
 //        return null;
     }
 
+    /**
+     * this function will add a subservice to out service list
+     * @param subServiceName
+     * @param serviceName
+     */
     public void addSubService(String subServiceName, String serviceName) {
 //        System.out.println("in add sub func ! ");
         Service subService = new Service(subServiceName);
@@ -83,10 +103,13 @@ public class ServiceList {
             for (; q.next != null; q = q.next) /*System.out.println(q.getName() + " in add function");*/ ;
             q.next = subService;
         }
-
-
     }
 
+    /**
+     * this function will delete a service from out service list. this service can also be a sub service.
+     * if we delete a main service, all its sub services will be deleted too.
+     * @param serviceName
+     */
     public void deleteService(String serviceName) {
         Service service = new Service(serviceName);
         if (head.next == null && head.getName().equals(serviceName)) {
@@ -107,6 +130,9 @@ public class ServiceList {
         p.next = q.next;
     }
 
+    /**
+     * this function will print all services with their subservices.
+     */
     public void printall() {
         printall(head, 1);
     }
