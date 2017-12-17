@@ -1,3 +1,5 @@
+import com.sun.org.apache.xpath.internal.operations.Or;
+
 import java.util.ArrayList;
 
 /**
@@ -6,13 +8,14 @@ import java.util.ArrayList;
 public class Agency {
     private String name;
     ArrayList<Service> providedServices;
-    ArrayList<Service> orders;
+    ArrayList<Order> orders = new ArrayList<>();
     Agency next;
 
     public Agency(String name) {
         this.name = name;
         this.providedServices = new ArrayList<>();
         this.next = null;
+        orders.add(new Order(0, "--"));
     }
 
     public String getName() {
@@ -24,7 +27,7 @@ public class Agency {
     }
 
     public void printServices() {
-        for (int i = 0; i < providedServices.size(); i++) {
+        for (int i = 1; i < providedServices.size(); i++) {
             System.out.println("Service: " + providedServices.get(i).getName());
             printServices(providedServices.get(i).innerList, 1);
             System.out.println("----------------------------------------");

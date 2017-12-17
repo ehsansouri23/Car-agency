@@ -1,3 +1,8 @@
+import com.sun.org.apache.xpath.internal.operations.Or;
+
+import java.util.ArrayList;
+import java.util.Collections;
+
 /**
  * Created by ehsan on 12/10/2017.
  */
@@ -16,6 +21,8 @@ public class AgencyList {
 
     public void addAgency(String agencyName) {
         Agency agency = new Agency(agencyName);
+        System.out.println(agency + " / " + agency.getName() + " added");
+        System.out.println("size: " + agency.orders.size());
         if (head == null)
             head = agency;
         else {
@@ -52,6 +59,14 @@ public class AgencyList {
         return findAgency(head, agencyName);
     }
 
+    /**
+     * this function will find a specific agency in agency list and return it. if agency does not exists, will
+     * return null.
+     *
+     * @param head
+     * @param agencyName
+     * @return
+     */
     public Agency findAgency(Agency head, String agencyName) {
         Agency p = head;
         while (p != null) {
@@ -64,6 +79,7 @@ public class AgencyList {
 
     /**
      * this function will check if a service is in list of services that an agency provides.
+     *
      * @param serviceName
      * @param agencyName
      * @return
@@ -84,22 +100,105 @@ public class AgencyList {
         return found;
     }
 
-    public void order(String serviceName, String agencyName, int priority) {
+    public void order(String serviceName, String agencyName, int priority, String customerName) {
         Agency agency = findAgency(agencyName);
-        if (agency != null)
-            System.out.println(agency.getName() + " found");
-        for (int i = 0; i < agency.providedServices.size(); i++) {
-            if (agency.providedServices.get(i).getName().equals(serviceName)) {
-                System.out.println(serviceName + " ordered succesfully");
-//                System.out.println("Not such a service you want to order named " + serviceName);
+        if (agency == null) {
+            System.out.println("Sorry. " + agencyName + " does not exists");
+            return;
+        }
+        Order order = new Order(priority, customerName);
+        if (serviceIsInAgency(serviceName, agencyName)) {
+            agency.orders.add(order);
+        } else {
+            System.out.println("Sorry. " + agencyName + " does not provide this service");
+            return;
+        }
+
+        toMaxHeapAfterAdding(agency.orders);
+    }
+
+    public void printOrders(String agencyName) {
+        Agency agency = findAgency(agencyName);
+        for (int i = 0; i < agency.orders.size(); i++) {
+            System.out.println(agency.orders.get(i).getCustomerName());
+        }
+        toMaxHeapAfterDeleting(agency.orders);
+    }
+
+    public void toMaxHeapAfterAdding(ArrayList<Order> orders) {
+        if (orders.size() == 2)
+            return;
+        int root = (orders.size() - 1) / 2;
+        while (root >= 1) {
+            int rCh = root * 2 + 1;
+            if (rCh >= orders.size())
+                rCh = -1;
+            int lCh = root * 2;
+            if (rCh == -1) {
+                if (orders.get(lCh).getPriority() > orders.get(root).getPriority()) {
+                    Collections.swap(orders, lCh, root);
+                }
+            } else {
+                int max = Math.max(orders.get(rCh).getPriority(), orders.get(lCh).getPriority());
+                if (max > orders.get(root).getPriority()) {
+                    if (orders.get(rCh).getPriority() == max)
+                        Collections.swap(orders, rCh, root);
+                    if (orders.get(lCh).getPriority() == max)
+                        Collections.swap(orders, lCh, root);
+                }
+            }
+            root /= 2;
+        }
+    }
+
+    public void toMaxHeapAfterDeleting(ArrayList<Order> orders) {
+        if (orders.size() == 1)
+            return;
+        Collections.swap(orders, 1, orders.size() - 1);
+        orders.remove(orders.size() - 1);
+        int root = 1;
+        while (root < orders.size() - 1) {
+            int swapped = 0;
+            int lCh = root * 2;
+            int rCh = root * 2 + 1;
+            if (rCh >= orders.size())
+                rCh = -1;
+            if (lCh >= orders.size())
+                lCh = -1;
+            if (rCh == -1 && lCh != -1) {
+                if (orders.get(lCh).getPriority() > orders.get(root).getPriority()) {
+                    Collections.swap(orders, lCh, root);
+                    root = lCh;
+                    swapped = 1;
+                }
+            }
+            else if (lCh == -1 && rCh != -1) {
+                if (orders.get(rCh).getPriority() > orders.get(root).getPriority()) {
+                    Collections.swap(orders, rCh, root);
+                    root = rCh;
+                    swapped = 1;
+                }
+            }
+            else if (rCh == -1 && lCh == -1)
                 return;
-            } else if (serviceList.findService(agency.providedServices.get(i).innerList, serviceName) == null) {
-                System.out.println("Not such a service you want to order named " + serviceName);
+            else {
+                int max = Math.max(orders.get(rCh).getPriority(), orders.get(lCh).getPriority());
+                if (max > orders.get(root).getPriority()) {
+                    if (orders.get(rCh).getPriority() == max) {
+                        Collections.swap(orders, rCh, root);
+                        root = rCh;
+                    }
+                    if (orders.get(lCh).getPriority() == max) {
+                        Collections.swap(orders, lCh, root);
+                        root = lCh;
+                    }
+                }
+                swapped = 1;
+            }
+            if (swapped == 0)
                 return;
-            } else System.out.println(serviceName + " ordered succesfully");
 
         }
-//        System.out.println(serviceName + " ordered succesfully");
     }
 
     public void printAll() {

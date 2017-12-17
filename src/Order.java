@@ -11,4 +11,16 @@ public class Order {
         time = System.currentTimeMillis();
         this.customerName = customerName;
     }
+
+    public int getPriority() {
+        return priority;
+    }
+
+    public long getTime() {
+        return time;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
 }
