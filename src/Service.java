@@ -3,12 +3,21 @@
  */
 public class Service {
     private String name;
+    private String model;
     private int tag; // 1 for inner linked list, 0 for data
     private int numberOfProviders;
     Service next;
     Service innerList;
 
     public Service(String name) {
+        this.name = name;
+        this.tag = 0;
+        this.numberOfProviders = 0;
+        this.next = null;
+        this.innerList = null;
+    }
+
+    public Service(String name, String model) {
         this.name = name;
         this.tag = 0;
         this.numberOfProviders = 0;
