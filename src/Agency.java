@@ -28,12 +28,17 @@ public class Agency {
 
     public void printServices() {
         for (int i = 1; i < providedServices.size(); i++) {
-            System.out.println("Service: " + providedServices.get(i).getName());
+//            System.out.println("Service: " + providedServices.get(i).getName());
             printServices(providedServices.get(i).innerList, 1);
-            System.out.println("----------------------------------------");
+//            System.out.println("----------------------------------------");
         }
     }
 
+    /**
+     * this function will print all services of an specific agency. o(n)
+     * @param head
+     * @param n
+     */
     private void printServices(Service head, int n) {
         Service p = head;
         for (; p != null; p = p.next)
