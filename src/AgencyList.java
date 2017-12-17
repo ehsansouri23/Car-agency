@@ -19,6 +19,10 @@ public class AgencyList {
         return head;
     }
 
+    /**
+     * this function will add an agency to out agency list. o(n)
+     * @param agencyName
+     */
     public void addAgency(String agencyName) {
         Agency agency = new Agency(agencyName);
         System.out.println(agency + " / " + agency.getName() + " added");
@@ -32,6 +36,11 @@ public class AgencyList {
         }
     }
 
+    /**
+     * this function will add an offer to offer list of an specific agency. o(n)
+     * @param serviceName
+     * @param agencyName
+     */
     public void addOffer(String serviceName, String agencyName) {
         Service p = serviceList.getHead();
         for (; p != null && !p.getName().equals(serviceName); p = p.next) ;
@@ -41,9 +50,13 @@ public class AgencyList {
         q.providedServices.add(p);
     }
 
+    /**
+     * this function will delete a service from provided services list of an specific agency. o(nlogn)
+     * @param serviceName
+     * @param agencyName
+     */
     public void delete(String serviceName, String agencyName) {
         Service p = serviceList.getHead();
-        Service beforeP = serviceList.getHead();
         for (; p != null && !p.getName().equals(serviceName); p = p.next) ;
         Agency q = head;
         for (; q != null && !q.getName().equals(agencyName); q = q.next) ;
@@ -78,7 +91,7 @@ public class AgencyList {
     }
 
     /**
-     * this function will check if a service is in list of services that an agency provides.
+     * this function will check if a service is in list of services that an agency provides. o(n)
      *
      * @param serviceName
      * @param agencyName
@@ -100,6 +113,13 @@ public class AgencyList {
         return found;
     }
 
+    /**
+     * this function will add an order to an specific agency's order list and make it to max heap again.
+     * @param serviceName
+     * @param agencyName
+     * @param priority
+     * @param customerName
+     */
     public void order(String serviceName, String agencyName, int priority, String customerName) {
         Agency agency = findAgency(agencyName);
         if (agency == null) {
@@ -117,6 +137,10 @@ public class AgencyList {
         toMaxHeapAfterAdding(agency.orders);
     }
 
+    /**
+     * this function will print all orders of an specific agency. o(n^2)
+     * @param agencyName
+     */
     public void printOrders(String agencyName) {
         Agency agency = findAgency(agencyName);
         for (int i = 0; i < agency.orders.size(); i++) {
@@ -125,6 +149,10 @@ public class AgencyList {
         toMaxHeapAfterDeleting(agency.orders);
     }
 
+    /**
+     * this function will make order list a max heap after adding a new order. 0(nlogn)
+     * @param orders
+     */
     public void toMaxHeapAfterAdding(ArrayList<Order> orders) {
         if (orders.size() == 2)
             return;
@@ -151,6 +179,10 @@ public class AgencyList {
         }
     }
 
+    /**
+     * this function will make order list a max heap after deleting its top element. 0(nlogn)
+     * @param orders
+     */
     public void toMaxHeapAfterDeleting(ArrayList<Order> orders) {
         if (orders.size() == 1)
             return;
@@ -201,6 +233,9 @@ public class AgencyList {
         }
     }
 
+    /**
+     * this function will print all agencies. 0(n)
+     */
     public void printAll() {
         Agency p = head;
         for (; p != null; p = p.next)
